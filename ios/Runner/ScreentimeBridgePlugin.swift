@@ -75,12 +75,12 @@ public class ScreentimeBridgePlugin: NSObject, FlutterPlugin {
     /// Must run on the main thread because it presents UI.
     private func requestAuthorization(result: @escaping FlutterResult) {
         DispatchQueue.main.async {
-            AuthorizationCenter.shared.requestAuthorization(for: .individual) { authResult in
-                switch authResult {
-                case .success:
+            Task {
+                do {
+                    try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
                     result(true)
-                case .failure(let err):
-                    NSLog("[ScreentimeBridge] auth failed: \(err)")
+                } catch {
+                    NSLog("[ScreentimeBridge] auth failed: \(error)")
                     result(false)
                 }
             }
@@ -103,7 +103,7 @@ public class ScreentimeBridgePlugin: NSObject, FlutterPlugin {
             }
 
             let initialSelection = self.loadSelection() ?? FamilyActivitySelection()
-            let pickerHost = FamilyActivityPickerHost(selection: initialSelection) { finalSelection in
+            var pickerHost = FamilyActivityPickerHost(selection: initialSelection) { finalSelection in
                 self.saveSelection(finalSelection)
                 let tokenStrings = Self.opaqueTokenStrings(from: finalSelection)
                 result(tokenStrings)
@@ -154,7 +154,7 @@ public class ScreentimeBridgePlugin: NSObject, FlutterPlugin {
             // Clear everything.
             store.shield.applications = nil
             store.shield.applicationCategories = nil
-            store.shield.webDomainDomains = nil
+            store.shield.webDomains = nil
             result(true)
         }
     }
