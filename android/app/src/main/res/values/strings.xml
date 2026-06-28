@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Screentime Blocker</string>
+    <string name="accessibility_service_description">
+        Screentime Blocker uses this accessibility service to detect when
+        you open an app you have chosen to block, and to draw a full-screen
+        reminder overlay that sends you back to the home screen. The service
+        does not read or transmit any screen content; it only reacts to
+        which app is in the foreground.
+    </string>
+</resources>

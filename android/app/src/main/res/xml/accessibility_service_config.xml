@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  accessibility_service_config.xml
+  Registered in AndroidManifest.xml under the AppBlockerService <service> tag.
+
+  Spec compliance:
+    * eventTypes = typeWindowStateChanged
+    * canRetrieveWindowContent = true
+    * packageNames is empty (we listen to ALL packages so we can detect
+      every foreground app change)
+-->
+<accessibility-service
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:description="@string/accessibility_service_description"
+    android:accessibilityEventTypes="typeWindowStateChanged"
+    android:accessibilityFeedbackType="feedbackGeneric"
+    android:accessibilityFlags="flagDefault|flagIncludeNotImportantViews|flagReportViewIds"
+    android:canRetrieveWindowContent="true"
+    android:canPerformGestures="false"
+    android:canRequestFilterKeyEvents="false"
+    android:notificationTimeout="100"
+    android:packageNames="" />
