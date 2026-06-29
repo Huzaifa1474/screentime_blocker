@@ -69,9 +69,10 @@ class ScreentimeBridge implements ScreentimeBridgeApi {
       final result = await _channel.invokeMethod<bool>('requestAuthorization');
       return result ?? false;
     } on PlatformException catch (e) {
-      // On iOS this throws if the family-controls entitlement is missing.
-      // On Android this is normal until the user enables the service.
       _log('requestAuthorization failed: ${e.code} / ${e.message}');
+      return false;
+    } on MissingPluginException {
+      _log('requestAuthorization: no native plugin registered');
       return false;
     }
   }

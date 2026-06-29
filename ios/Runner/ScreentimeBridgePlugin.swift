@@ -73,7 +73,13 @@ public class ScreentimeBridgePlugin: NSObject, FlutterPlugin {
 
     /// Triggers FaceID/TouchID-gated FamilyControls authorization.
     /// Must run on the main thread because it presents UI.
+    /// On simulator, authorization is impossible so we return `true` for testing.
     private func requestAuthorization(result: @escaping FlutterResult) {
+#if targetEnvironment(simulator)
+        NSLog("[ScreentimeBridge] simulator detected — skipping authorization")
+        result(true)
+        return
+#endif
         DispatchQueue.main.async {
             Task {
                 do {
@@ -81,7 +87,11 @@ public class ScreentimeBridgePlugin: NSObject, FlutterPlugin {
                     result(true)
                 } catch {
                     NSLog("[ScreentimeBridge] auth failed: \(error)")
-                    result(false)
+                    result(FlutterError(
+                        code: "AUTH_FAILED",
+                        message: "FamilyControls authorization failed: \(error.localizedDescription)",
+                        details: nil
+                    ))
                 }
             }
         }

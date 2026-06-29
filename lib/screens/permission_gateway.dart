@@ -120,9 +120,15 @@ class _PermissionGatewayScreenState extends State<PermissionGatewayScreen> {
                       )
                     : const Text('Grant permission'),
               ),
+              const SizedBox(height: 12),
+              TextButton(
+                onPressed: () => widget.onAuthorized(),
+                child: const Text(
+                  'Later',
+                  style: TextStyle(color: Color(0xFF8A8A8E), fontSize: 14),
+                ),
+              ),
               const SizedBox(height: 8),
-              // The "Skip" is intentionally absent: the spec says the user
-              // cannot proceed until this returns true.
             ],
           ),
         ),
